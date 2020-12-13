@@ -92,64 +92,22 @@ while finish_process == False:
                     print("This is not a valid partition.")
                     break
 
-
-
-                    
-
-
-
-                   
-
-                    
-
-                
-                
-
-
-                
-
-                
-
-
-        
-
-    
-     
-
     elif action == "WD":
         pass
-
-
-
 
     elif action == "CQ":
         pass
 
-    
-
     elif action == "CI":
         pass
 
-
-
-
     elif action == "LOG":
         pass
-
-
-
 
     elif action == "END":
         print("Thank you for using this programme")
         finish_process = True
 
-
     else:
         print("This action is not available. Pls try again.")
         finish_process = True
-
-
-
-
-
-
