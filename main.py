@@ -14,6 +14,13 @@ tesco = Warehouse()
 
 finish_process = False
 
+object_1 = Product("object1", 123, 10)
+
+object_2 = Product("object2", 124, 7)
+
+
+
+
 while finish_process == False:
     print("what do you want to do? Write the abbreviations for the action (look at the table below)\n")
 
@@ -38,6 +45,9 @@ while finish_process == False:
 
         for partition in tesco.partitions:
             print(partition.floor, "     ", partition.name)
+
+        storage_partition.add_products(object_1)
+        storage_partition.add_products(object_2)
 
     elif action == "ADD":
         print("In which partition do you want to add the product? (look at below to see existing partitions)\n")
@@ -108,3 +118,4 @@ while finish_process == False:
     else:
         print("This action is not available. Pls try again.")
         finish_process = True
+
