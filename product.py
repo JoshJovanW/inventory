@@ -10,12 +10,7 @@ class Product:
     def add_quantity(self, quantity):
         self.quantity += quantity
 
-    def add_name(self, name):
-        self.name = name
-        
-    def add_code(self, code):
-        self.code = code
-
-
+    def remove_quantity(self, quantity):
+        self.quantity -= quantity
 
 
