@@ -34,63 +34,60 @@ while finish_process == False:
         print("The partition has been created.")
         print("here are the existing partitions inside the warehouse: \n")
 
-        print("Name" + "     " + "Floor\n")
+        print("Floor" + "     " + "Name\n")
 
         for partition in tesco.partitions:
-            print(partition.name ,"     ", partition.floor)
+            print(partition.floor, "     ", partition.name)
 
     elif action == "ADD":
         print("In which partition do you want to add the product? (look at below to see existing partitions)\n")
 
         print("existing partitions: \n")
-        print("Name" + "     " + "Floor\n")
+        print("Floor" + "     " + "Name\n")
 
         for partition in tesco.partitions:
-            print(partition.name ,"     ", partition.floor)
+            print(partition.floor, "     ", partition.name)
 
         partition_name = input()
 
-        print("Which floor is the partition in? \n" )
+        print("Which floor is the partition in? \n")
         partition_floor = int(input())
 
         for partition in tesco.partitions:
-                if partition_name == partition.name and partition_floor == partition.floor:
-                    print("what is the code of the product? (it will check if the product already exist)")
-                    product_code = input()
+            if partition_name == partition.name and partition_floor == partition.floor:
+                print("what is the code of the product? (it will check if the product already exist)")
+                product_code = input()
 
-                    print("\n")
+                for key in partition.products:
+                    if product_code == partition.products[key].code:
+                        print("This product exists.")
+                        print("How much quantity do you want to add?")
+                        product_quantity = int(input())
 
-                    for key in partition.products:
-                        if product_code == partition.products[key].code:
-                            print("This product exists.")
-                            print("How much quantity do you want to add?")
-                            product_quantity = int(input())
+                        partition.products[key].add_quantity(product_quantity)
+                        print("The quantity of the product have been added")
+                        break
 
-                            print("\n")
+                    else:
+                        print("what is the name of the product? ")
+                        new_product_name = input()
 
-                            partition.products[key].add_quantity(product_quantity)
-                            print("The quantity of the product have been added")
-                            break
+                        print("what is the code of the product? ")
+                        new_product_code = input()
 
-                        else:
-                            print("what is the name of the product? ")
-                            new_product_name = input()
-            
-                            print("what is the code of the product? ")
-                            new_product_code = input()
+                        print("what is the quantity of the product? ")
+                        new_product_quantity = int(input())
 
-                            print("what is the quantity of the product? ")
-                            new_product_quantity = int(input())
+                        new_product = Product(
+                            new_product_name, new_product_code, new_product_quantity)
 
-                            new_product = Product(new_product_name, new_product_code, new_product_quantity)
+                        partition.add_products(new_product)
+                        print("THe product has been added.")
+                        break
 
-                            partition.add_products(new_product)
-                            print("THe product has been added.")
-                            break
-                
-                else:
-                    print("This is not a valid partition.")
-                    break
+            else:
+                print("This is not a valid partition.")
+                break
 
     elif action == "WD":
         pass
