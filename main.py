@@ -8,7 +8,6 @@ from warehouse import Warehouse
 
 from abbreviations import abrev
 
-
 Menu()
 
 tesco = Warehouse()
@@ -20,47 +19,34 @@ while finish_process == False:
 
     abrev()
 
-    print("\n")
-
     action = input()
 
     if action == "SP":
-        storage_partition = Partition(None, None, None)
-        tesco.add_partition(storage_partition)
-
         print("What do you want to call it? ")
         partition_name = input()
-        storage_partition.set_name(partition_name)
-
-        print("\n")
 
         print("which floor do you want it to be on? (write the number)")
         partition_floor = int(input())
-        storage_partition.set_floor(partition_floor)
 
-        print("\n")
-
-        print("which room do you want it to be? (write the number)")
-        partition_room = int(input())
-        storage_partition.set_room(partition_room)
-
-        print("\n")
+        storage_partition = Partition(partition_name, partition_floor)
+        tesco.add_partition(storage_partition)
 
         print("The partition has been created.")
         print("here are the existing partitions inside the warehouse: \n")
 
+        print("Name" + "     " + "Floor\n")
+
         for partition in tesco.partitions:
-            print("partition's name: ", partition.name , "-------->" ,  "floor: ", partition.floor, "room: ", partition.room )
-
-        
-
+            print(partition.name ,"     ", partition.floor)
 
     elif action == "ADD":
         print("In which partition do you want to add the product? (look at below to see existing partitions)\n")
 
         print("existing partitions: \n")
+        print("Name" + "     " + "Floor\n")
+
         for partition in tesco.partitions:
-            print("partition's name: ", partition.name , "-------->" ,  "floor: ", partition.floor, "room: ", partition.room, "\n")
+            print(partition.name ,"     ", partition.floor)
 
         partition_name = input()
 
@@ -73,7 +59,7 @@ while finish_process == False:
                     product_code = input()
 
                     print("\n")
-                    
+
                     for key in partition.products:
                         if product_code == partition.products[key].code:
                             print("This product exists.")
@@ -84,38 +70,22 @@ while finish_process == False:
 
                             partition.products[key].add_quantity(product_quantity)
                             print("The quantity of the product have been added")
-
-
                             break
 
                         else:
-                            new_product = Product(None, None, None)
-
                             print("what is the name of the product? ")
                             new_product_name = input()
-                            new_product.add_name(new_product_name)
-
-                            print("\n")
-
-
+            
                             print("what is the code of the product? ")
                             new_product_code = input()
-                            new_product.add_code(new_product_code)
-
-                            print("\n")
-
 
                             print("what is the quantity of the product? ")
                             new_product_quantity = int(input())
-                            new_product.add_quantity(new_product_quantity)
 
-                            print("\n")
-
+                            new_product = Product(new_product_name, new_product_code, new_product_quantity)
 
                             partition.add_products(new_product)
                             print("THe product has been added.")
-                    
-                    
                             break
                 
                 else:
