@@ -1,4 +1,4 @@
-rom menu import Menu
+from menu import Menu
 
 from partition import Partition
 
@@ -50,47 +50,78 @@ while finish_process == False:
 
         partition_name = input()
 
-        print("Which floor is the partition in? \n")
+        print("Which floor is the partition in?")
         partition_floor = int(input())
+
+        partition_existence = False
+        partition_not_empty = False
+        code_exist = False
 
         for partition in tesco.partitions:
             if partition_name == partition.name and partition_floor == partition.floor:
-                print("what is the code of the product? (it will check if the product already exist)")
+                partition_existence = True
+                print("what is the code of the product?")
                 product_code = int(input())
 
                 if partition.products != {}:
+                    partition_not_empty = True
                     for key in partition.products:
                         if product_code == partition.products[key].code:
+                            code_exist = True
                             print("This product exists.")
                             print("How much quantity do you want to add?")
                             product_quantity = int(input())
 
-                            partition.products[key].add_quantity(
-                                product_quantity)
+                            partition.products[key].add_quantity(product_quantity)
                             print("The quantity of the product have been added")
                             break
-
-                else:
-                    print("The product under that code doesn't exist. create a new one.")
-
-                    print("what is the name of the product? ")
-                    new_product_name = input()
-
-                    print("what is the code of the product? ")
-                    new_product_code = int(input())
-
-                    print("what is the quantity of the product? ")
-                    new_product_quantity = int(input())
-
-                    new_product = Product(new_product_name, new_product_code, new_product_quantity)
-
-                    partition.add_products(new_product)
-                    print("THe product has been added.")
-                    break
+                        
+            if partition_existence == False:
+                print("ERROR! There are no partitions named" , partition_name, "on floor", partition_floor)
+                break
 
             else:
-                print("This is not a valid partition.")
+                pass
+
+            if partition_not_empty == False:
+                print("ERROR! There are no products in this partition. Please create a product.\n")
+                print("what is the name of the product? ")
+                new_product_name = input()
+
+                print("what is the code of the product? ")
+                new_product_code = int(input())
+
+                print("what is the quantity of the product? ")
+                new_product_quantity = int(input())
+
+                new_product = Product(new_product_name, new_product_code, new_product_quantity)
+
+                partition.add_products(new_product)
+                print("THe product has been added.")
                 break
+
+            else:
+                pass
+
+            if code_exist == False:
+                print("ERROR! There are no products under that code. please create a new one.")
+                print("what is the name of the product? ")
+                new_product_name = input()
+
+                print("what is the code of the product? ")
+                new_product_code = int(input())
+
+                print("what is the quantity of the product? ")
+                new_product_quantity = int(input())
+
+                new_product = Product(new_product_name, new_product_code, new_product_quantity)
+
+                partition.add_products(new_product)
+                print("THe product has been added.")
+                break
+
+            else:
+                pass
 
     elif action == "WD":
         print("In which partition do you want to withdraw the product? (look at below to see existing partitions)\n")
