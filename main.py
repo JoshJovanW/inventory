@@ -1,18 +1,23 @@
 from menu import Menu
-
 from partition import Partition
-
 from product import Product
-
 from warehouse import Warehouse
-
 from abbreviations import abrev
-
+from datetime import datetime
+from log import Log
 Menu()
 
 tesco = Warehouse()
 
 finish_process = False
+
+time = datetime.now()
+
+date_and_time = time.strftime("%d/%m/%Y %H:%M:%S")
+
+log_book = Log()
+
+
 
 while finish_process == False:
     print("what do you want to do? Write the abbreviations for the action (look at the table below)\n")
@@ -31,7 +36,10 @@ while finish_process == False:
         storage_partition = Partition(partition_name, partition_floor)
         tesco.add_partition(storage_partition)
 
-        print("The partition has been created.")
+        statement = print("The partition " + partition_name + " has been created at " + date_and_time)
+        print(statement)
+        log_book.add_record(statement)
+
         print("here are the existing partitions inside the warehouse: \n")
 
         print("Floor" + "     " + "Name\n")
@@ -40,18 +48,7 @@ while finish_process == False:
             print(partition.floor, "     ", partition.name)
 
     elif action == "ADD":
-        print("In which partition do you want to add the product? (look at below to see existing partitions)\n")
-
-        print("existing partitions: \n")
-        print("Floor" + "     " + "Name\n")
-
-        for partition in tesco.partitions:
-            print(partition.floor, "     ", partition.name)
-
-        partition_name = input()
-
-        print("Which floor is the partition in?")
-        partition_floor = int(input())
+        tesco.find_partition()
 
         partition_existence = False
         partition_not_empty = False
@@ -73,11 +70,14 @@ while finish_process == False:
                             product_quantity = int(input())
 
                             partition.products[key].add_quantity(product_quantity)
-                            print("The quantity of the product have been added")
+                            statement = print("The quantity of the product have been added to " + partition.name + " at " + date_and_time)
+                            print(statement)
+                            log_book.add_record(statement)
                             break
 
+
         if partition_existence == False:
-            print("ERROR! There are no partitions named" , partition_name, "on floor", partition_floor)
+            print("ERROR! There are no partitions named " , partition_name, " on floor ", partition_floor)
             continue
 
         if partition_not_empty == False:
@@ -97,7 +97,9 @@ while finish_process == False:
             for partition in tesco.partitions:
                 if partition_name == partition.name and partition_floor == partition.floor:
                     partition.add_products(new_product)
-                    print("THe product has been added.")
+                    statement = print("The product has been added to the partition " + partition.name + " at " + date_and_time)
+                    print(statement)
+                    log_book.add_record(statement)
                     continue
 
         if code_exist == False:
@@ -117,23 +119,14 @@ while finish_process == False:
             for partition in tesco.partitions:
                 if partition_name == partition.name and partition_floor == partition.floor:
                     partition.add_products(new_product)
-                    print("THe product has been added.")
+                    statement = print("The product has been added to the partition " + partition.name + " at " + date_and_time)
+                    print(statement)
+                    log_book.add_record(statement)
                     continue
 
 
     elif action == "WD":
-        print("In which partition do you want to withdraw the product? (look at below to see existing partitions)\n")
-
-        print("existing partitions: \n")
-        print("Floor" + "     " + "Name\n")
-
-        for partition in tesco.partitions:
-            print(partition.floor, "     ", partition.name)
-
-        partition_name = input()
-
-        print("Which floor is the partition in?")
-        partition_floor = int(input())
+        tesco.find_partition()
 
         partition_existence = False
         partition_not_empty = False
@@ -159,12 +152,15 @@ while finish_process == False:
                                 quantity_to_remove = int(input())
 
                                 partition.products[key].remove_quantity(quantity_to_remove)
-                                print("The quantity of the product has been removed")
+                                statement = print("The quantity of the product has been removed at " + date_and_time)
+                                log_book.add_record(statement)
                                 break
 
                             elif withdraw_option == "all":
                                 partition.withdraw_products(product_code)
-                                print("Your product has been withdrawed.")
+                                statement = print("Your product has been withdrawed at " + date_and_time)
+                                print(statement)
+                                log_book.add_record(statement)
                                 break
 
                             else:
@@ -195,24 +191,13 @@ while finish_process == False:
             for key in partition.products:
                 if product_code == partition.products[key].code:
                     total_quantity_of_item += partition.products[key].quantity
-
+        
         print("The total quantity of the item under that code is" + total_quantity_of_item)
         print("note if the quantity is 0 then it could be the product under that code does'nt exist")
 
 
     elif action == "CI":
-        print("In which partition do you want to add the product? (look at below to see existing partitions)\n")
-
-        print("existing partitions: \n")
-        print("Floor" + "     " + "Name\n")
-
-        for partition in tesco.partitions:
-            print(partition.floor, "     ", partition.name)
-
-        partition_name = input()
-
-        print("Which floor is the partition in?")
-        partition_floor = int(input())
+        tesco.find_partition()
 
         partition_existence = False
         partition_not_empty = False
