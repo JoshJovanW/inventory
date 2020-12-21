@@ -1,9 +1,9 @@
 class Log:
     def __init__(self):
-        self.record = []
+        self.records = []
 
     def __str__(self):
-        return self.record
+        return f"{self.records}"
 
     def add_record(self, record):
-        self.record.append(record)
+        self.records.append(record)
