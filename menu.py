@@ -6,7 +6,7 @@ def Menu():
 
     print("- Make Storage partitions.\n") 
 
-    print("- Add or Withdraw products to an partition")
+    print("- Add or Withdraw products to an partition.\n")
 
     print("- Check the items inside a partition.\n")
 
@@ -14,5 +14,3 @@ def Menu():
 
     print("- Look at the log of your activity.\n")
 
-
-    
