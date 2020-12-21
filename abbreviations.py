@@ -10,6 +10,8 @@ def abrev():
 
     print(" - CI"  +  "              "  +  "Check items")
 
+    print(" - CP"  +  "              "  +  "Check partitions")
+
     print(" - LOG" +  "             "   +  "Print log")
 
     print(" - END" +  "             "   +  "End the programme")
