@@ -21,6 +21,8 @@ while finish_process == False:
 
     action = input()
 
+    print("\n")
+
     if action == "SP":
         print("What do you want to call it? ")
         partition_name = input()
@@ -58,7 +60,7 @@ while finish_process == False:
             if partition_name == partition.name and partition_floor == partition.floor:
                 partition_existence = True
                 print("what is the code of the product?")
-                product_code = int(input())
+                product_code = str(input())
 
                 if partition.products != {}:
                     partition_not_empty = True
@@ -89,8 +91,8 @@ while finish_process == False:
             print("what is the name of the product? ")
             new_product_name = input()
 
-            print("what is the code of the product? ")
-            new_product_code = int(input())
+            print("what is the code of the product? please note that the code can only be numbers for easier use.")
+            new_product_code = str(input())
             code_exist = True
 
             print("what is the quantity of the product? ")
@@ -115,8 +117,8 @@ while finish_process == False:
             print("what is the name of the product? ")
             new_product_name = input()
 
-            print("what is the code of the product? ")
-            new_product_code = int(input())
+            print("what is the code of the product? please note that the code can only be numbers for easier use.")
+            new_product_code = str(input())
             code_exist = True
 
             print("what is the quantity of the product? ")
@@ -146,8 +148,8 @@ while finish_process == False:
         for partition in tesco.partitions:
             if partition_name == partition.name and partition_floor == partition.floor:
                 partition_existence = True
-                print("what is the code of the product?")
-                product_code = int(input())
+                print("what is the code of the product? please note that the code can only be numbers for easier use.")
+                product_code = str(input())
 
                 if partition.products != {}:
                     partition_not_empty = True
@@ -203,15 +205,15 @@ while finish_process == False:
     elif action == "CQ":
         total_quantity_of_item = 0
 
-        print("what is the code of the product?")
-        product_code = int(input())
+        print("what is the code of the product? please note that the code can only be numbers for easier use.")
+        product_code = str(input())
 
         for partition in tesco.partitions:
             for key in partition.products:
                 if product_code == partition.products[key].code:
                     total_quantity_of_item += partition.products[key].quantity
         
-        print("The total quantity of the item under that code is" + total_quantity_of_item)
+        print(str("The total quantity of the item under that code is" + total_quantity_of_item))
         print("note if the quantity is 0 then it could be the product under that code does'nt exist")
 
     elif action == "CI":
@@ -234,7 +236,7 @@ while finish_process == False:
             continue
 
         if partition_not_empty == False:
-            print("ERROR! There are no products in this partition. Please create a product or choose another one.\n")
+            print("There are no products in this partition. Please create a product or choose another one.\n")
             continue
 
     elif action == "CP":
@@ -256,3 +258,4 @@ while finish_process == False:
     else:
         print("This action is not available. Pls try again.")
         finish_process = True
+
