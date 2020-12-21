@@ -14,7 +14,7 @@ class Warehouse:
         print("existing partitions: \n")
         print("Floor" + "     " + "Name\n")
 
-        for partition in tesco.partitions:
+        for partition in self.partitions:
             print(partition.floor, "     ", partition.name)
 
         partition_name = input()
