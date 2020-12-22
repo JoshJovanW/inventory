@@ -9,13 +9,15 @@ class Warehouse:
         self.partitions.append(partitions)
 
     def find_partition(self):
-        print("Please chose a partition to do the action? (look at below to see existing partitions)\n")
+        print("Please chose a partition to do the action. (look at below to see existing partitions)\n")
 
         print("existing partitions: \n")
         print("Floor" + "     " + "Name\n")
 
         for partition in self.partitions:
             print(partition.floor, "     ", partition.name)
+
+        print("Write the partition name.")
 
         partition_name = input()
 
