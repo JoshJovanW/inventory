@@ -15,6 +15,8 @@ finish_process = False
 log_book = Log()
 
 while finish_process == False:
+    print("\n")
+
     print("what do you want to do? Write the abbreviations for the action (look at the table below)\n")
 
     abrev()
@@ -48,6 +50,8 @@ while finish_process == False:
 
         for partition in tesco.partitions:
             print(partition.floor, "     ", partition.name)
+
+        print("\n")
 
     elif action == "ADD":
         tesco.find_partition()
@@ -83,22 +87,21 @@ while finish_process == False:
 
 
         if partition_existence == False:
-            print("ERROR! There are no partitions named " , partition_name, " on floor ", partition_floor)
+            print("There are no partitions named " , partition_name, " on floor ", partition_floor)
             continue
 
         if partition_not_empty == False:
-            print("ERROR! There are no products in this partition. Please create a product.\n")
+            print("There are no products in this partition. Please create a product.\n")
             print("what is the name of the product? ")
             new_product_name = input()
 
-            print("what is the code of the product? please note that the code can only be numbers for easier use.")
-            new_product_code = str(input())
+            print("note that we will use your previous inputed code as the code for this product")
             code_exist = True
 
             print("what is the quantity of the product? ")
             new_product_quantity = int(input())
 
-            new_product = Product(new_product_name, new_product_code, new_product_quantity)
+            new_product = Product(new_product_name, product_code, new_product_quantity)
              
             for partition in tesco.partitions:
                 if partition_name == partition.name and partition_floor == partition.floor:
@@ -113,18 +116,17 @@ while finish_process == False:
                     continue
 
         if code_exist == False:
-            print("ERROR! There are no products under that code. please create a new one.")
+            print("There are no products under that code. please create a new one.")
             print("what is the name of the product? ")
             new_product_name = input()
 
-            print("what is the code of the product? please note that the code can only be numbers for easier use.")
-            new_product_code = str(input())
+            print("note that we will use your previous inputed code as the code for this product")
             code_exist = True
 
             print("what is the quantity of the product? ")
             new_product_quantity = int(input())
 
-            new_product = Product(new_product_name, new_product_code, new_product_quantity)
+            new_product = Product(new_product_name, product_code, new_product_quantity)
 
             for partition in tesco.partitions:
                 if partition_name == partition.name and partition_floor == partition.floor:
@@ -137,6 +139,8 @@ while finish_process == False:
                     statement = ("[" + date_and_time + "]" + " " + "The product has been added to the partition" + " " + partition.name)
                     log_book.add_record(statement)
                     continue
+        
+        print("\n")
 
     elif action == "WD":
         tesco.find_partition()
@@ -190,17 +194,19 @@ while finish_process == False:
                                 break
         
         if partition_existence == False:
-            print("ERROR! There are no partitions named" , partition_name, "on floor", partition_floor)
+            print("There are no partitions named" , partition_name, "on floor", partition_floor)
             continue
 
         if partition_not_empty == False:
-            print("ERROR! There are no products in this partition. Please create a product or choose another one.\n")
+            print("There are no products in this partition. Please create a product or choose another one.\n")
             code_exist = True
             continue
 
         if code_exist == False:
-            print("ERROR! There are no products under that code. please choose another one.")
+            print("There are no products under that code. please choose another one.")
             continue
+
+        print("\n")
 
     elif action == "CQ":
         total_quantity_of_item = 0
@@ -212,9 +218,11 @@ while finish_process == False:
             for key in partition.products:
                 if product_code == partition.products[key].code:
                     total_quantity_of_item += partition.products[key].quantity
-        
-        print(str("The total quantity of the item under that code is" + total_quantity_of_item))
+        print("\n")
+        print ("The total quantity of the item under that code is", total_quantity_of_item)
         print("note if the quantity is 0 then it could be the product under that code does'nt exist")
+
+        print("\n")
 
     elif action == "CI":
         tesco.find_partition()
@@ -228,16 +236,18 @@ while finish_process == False:
                 if partition.products != {}:
                     partition_not_empty = True
                     for key in partition.products:
-                        print(partition.products[key].name)
+                        print(partition.products[key].name, "quantity:", partition.products[key].quantity)
                         break
         
         if partition_existence == False:
-            print("ERROR! There are no partitions named" , partition_name, "on floor", partition_floor)
+            print("There are no partitions named" , partition_name, "on floor", partition_floor)
             continue
 
         if partition_not_empty == False:
             print("There are no products in this partition. Please create a product or choose another one.\n")
             continue
+
+        print("\n")
 
     elif action == "CP":
         print("here are the existing partitions inside the warehouse: \n")
@@ -247,9 +257,13 @@ while finish_process == False:
         for partition in tesco.partitions:
             print(partition.floor, "     ", partition.name)
 
+        print("\n")
+
     elif action == "LOG":
         for record in log_book.records:
             print(record)
+
+        print("\n")
 
     elif action == "END":
         print("Thank you for using this programme")
@@ -258,4 +272,3 @@ while finish_process == False:
     else:
         print("This action is not available. Pls try again.")
         finish_process = True
-
