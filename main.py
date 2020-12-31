@@ -106,6 +106,8 @@ while finish_process == False:
             if product == product_code:
                 product_exist = True
                 product_key = product_code
+                print(f"There are {tesco.partitions[index_of_partition].products[product].quantity} of the product inside this partition.")
+
 
         if product_exist == False:
             print("The product under that code does not exist.")
@@ -120,11 +122,13 @@ while finish_process == False:
             print("How much quantity do you want to remove?")
             quantity_to_remove = int(input())
 
-            tesco.partitions[index_of_partition].products[product_key].remove_quantity(quantity_to_remove)
-            print("The quantity of the product " + product_code + " has been removed from" + " " + tesco.partitions[index_of_partition].name)
+            action_done = tesco.partitions[index_of_partition].products[product_key].remove_quantity(quantity_to_remove)
+            
+            if action_done == True:
+                print("The quantity of the product " + product_code + " has been removed from" + " " + tesco.partitions[index_of_partition].name)
 
-            log_book.add_record("The quantity of the product " + product_code + " has been removed from" + " " + tesco.partitions[index_of_partition].name)
-            continue
+                log_book.add_record("The quantity of the product " + product_code + " has been removed from" + " " + tesco.partitions[index_of_partition].name)
+                continue
 
         elif withdraw_action == "all":
             tesco.partitions[index_of_partition].withdraw_product(product_code)
