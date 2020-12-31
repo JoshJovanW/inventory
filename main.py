@@ -3,7 +3,6 @@ from partition import Partition
 from product import Product
 from warehouse import Warehouse
 from abbreviations import abrev
-from datetime import datetime
 from log import Log
 
 Menu()
@@ -36,13 +35,8 @@ while finish_process == False:
         tesco.add_partition(storage_partition)
 
         print("The partition " + partition_name + " has been created.")
-
-        time = datetime.now()
-
-        date_and_time = time.strftime("%d/%m/%Y %H:%M:%S")
-
-        statement = ("[" + date_and_time + "]" + " " + "The partition " + partition_name + " " + "has been created." )
-        log_book.add_record(statement)
+        
+        log_book.add_record("The partition " + partition_name + " has been created.")
 
         print("here are the existing partitions inside the warehouse: \n")
 
@@ -54,200 +48,127 @@ while finish_process == False:
         print("\n")
 
     elif action == "ADD":
-        tesco.find_partition()
-
-        partition_existence = False
-        partition_not_empty = False
-        code_exist = False
-
-        for partition in tesco.partitions:
-            if partition_name == partition.name and partition_floor == partition.floor:
-                partition_existence = True
-                print("what is the code of the product?")
-                product_code = str(input())
-
-                if partition.products != {}:
-                    partition_not_empty = True
-                    for key in partition.products:
-                        if product_code == partition.products[key].code:
-                            code_exist = True
-                            print("This product exists.")
-                            print("How much quantity do you want to add?")
-                            product_quantity = int(input())
-
-                            partition.products[key].add_quantity(product_quantity)
-                            print("The quantity of the product has been added.")
-
-                            time = datetime.now()
-                            date_and_time = time.strftime("%d/%m/%Y %H:%M:%S")
-                            
-                            statement = ("[" + date_and_time + "]" + " " + "The quantity of the product has been added." )
-                            log_book.add_record(statement)
-                            break
-
-
-        if partition_existence == False:
-            print("There are no partitions named " , partition_name, " on floor ", partition_floor)
+        index_of_partition = tesco.find_partition()
+    
+        if index_of_partition == -1:
+            print("This partition does not exist.")
             continue
 
-        if partition_not_empty == False:
-            print("There are no products in this partition. Please create a product.\n")
-            print("what is the name of the product? ")
-            new_product_name = input()
+        print("what is the product code?")
+        product_code = str(input())
 
-            print("note that we will use your previous inputed code as the code for this product")
-            code_exist = True
+        product_exist = False
+        for product in tesco.partitions[index_of_partition].products:
+            if product == product_code:
+                product_exist = True
+                
+        if product_exist == False:
+            print("The product under this code doesn't exist.")
 
-            print("what is the quantity of the product? ")
-            new_product_quantity = int(input())
+            print("what is the product name?")
+            product_name = input()
 
-            new_product = Product(new_product_name, product_code, new_product_quantity)
-             
-            for partition in tesco.partitions:
-                if partition_name == partition.name and partition_floor == partition.floor:
-                    partition.add_products(new_product)
-                    print("The product has been added to the partition" + " " + partition.name)
-                    
-                    time = datetime.now()
-                    date_and_time = time.strftime("%d/%m/%Y %H:%M:%S")
-                    
-                    statement = ("[" + date_and_time + "]" + " " + "The product has been added to the partition" + " " + partition.name)
-                    log_book.add_record(statement)
-                    continue
+            print("what is the product quantity?")
+            product_quantity = int(input())
 
-        if code_exist == False:
-            print("There are no products under that code. please create a new one.")
-            print("what is the name of the product? ")
-            new_product_name = input()
+            new_product = Product(product_name, product_code, product_quantity)
 
-            print("note that we will use your previous inputed code as the code for this product")
-            code_exist = True
+            tesco.partitions[index_of_partition].add_product(new_product)
 
-            print("what is the quantity of the product? ")
-            new_product_quantity = int(input())
+            print("The product has been added to the partition.")
 
-            new_product = Product(new_product_name, product_code, new_product_quantity)
+            log_book.add_record("The product " + product_code + " " + "has been added to the partition" + " " + tesco.partitions[index_of_partition].name)
+            continue
 
-            for partition in tesco.partitions:
-                if partition_name == partition.name and partition_floor == partition.floor:
-                    partition.add_products(new_product)
-                    print("The product has been added to the partition" + " " + partition.name)
+        print("This product exists.")
+        print("How much quantity do you want to add?")
+        product_quantity = int(input())
 
-                    time = datetime.now()
-                    date_and_time = time.strftime("%d/%m/%Y %H:%M:%S")
+        product.add_quantity(product_quantity)
+        print("The quantity of the product has been added.")
 
-                    statement = ("[" + date_and_time + "]" + " " + "The product has been added to the partition" + " " + partition.name)
-                    log_book.add_record(statement)
-                    continue
-        
-        print("\n")
+        log_book.add_record("The product " + product_code+ "quantity has been added to the partition" + tesco.partitions[index_of_partition].name)
+
 
     elif action == "WD":
-        tesco.find_partition()
+        index_of_partition = tesco.find_partition()
 
-        partition_existence = False
-        partition_not_empty = False
-        code_exist = False
-
-        for partition in tesco.partitions:
-            if partition_name == partition.name and partition_floor == partition.floor:
-                partition_existence = True
-                print("what is the code of the product? please note that the code can only be numbers for easier use.")
-                product_code = str(input())
-
-                if partition.products != {}:
-                    partition_not_empty = True
-                    for key in partition.products:
-                        if product_code == partition.products[key].code:
-                            code_exist = True
-                            print("do you want to remove a specific quantity or all of it?\n")
-                            print("Type 'specific' for the first option and 'all' for the latter")
-                            withdraw_option = input()
-
-                            if withdraw_option == "specific":
-                                print("How much quantity do you want to remove?")
-                                quantity_to_remove = int(input())
-
-                                partition.products[key].remove_quantity(quantity_to_remove)
-                                print("The quantity of the product has been removed from" + " " + partition.name )
-
-                                time = datetime.now()
-                                date_and_time = time.strftime("%d/%m/%Y %H:%M:%S")
-
-                                statement = ("[" + date_and_time + "]" + " " + "The quantity of the product has been removed from the partition" + " " + partition.name)
-                                log_book.add_record(statement)
-                                break
-
-                            elif withdraw_option == "all":
-                                partition.withdraw_products(product_code)
-                                print("The product has been withdrawed from the partition " + " " + partition.name )
-
-                                time = datetime.now()
-                                date_and_time = time.strftime("%d/%m/%Y %H:%M:%S")
-
-                                statement = ("[" + date_and_time + "]" + " " + "The product has been withdrawed from the partition" + " " + partition.name)
-                                log_book.add_record(statement)
-                                break
-
-                            else:
-                                print("The option is not available please try again. ")
-                                break
-        
-        if partition_existence == False:
-            print("There are no partitions named" , partition_name, "on floor", partition_floor)
+        if index_of_partition == -1:
+            print("This partition does not exists.")
             continue
 
-        if partition_not_empty == False:
-            print("There are no products in this partition. Please create a product or choose another one.\n")
-            code_exist = True
+        print("what is the product code?")
+        product_code = str(input())
+
+        product_exist = False
+        product_key = None
+        for product in tesco.partitions[index_of_partition].products:
+            if product == product_code:
+                product_exist = True
+                product_key = product_code
+
+        if product_exist == False:
+            print("The product under that code does not exist.")
             continue
 
-        if code_exist == False:
-            print("There are no products under that code. please choose another one.")
+        print("Do you want to withdraw some or all of it? ")
+        print("Type 'specific' or 'all'.\n")
+
+        withdraw_action = input()
+
+        if withdraw_action == "specific":
+            print("How much quantity do you want to remove?")
+            quantity_to_remove = int(input())
+
+            tesco.partitions[index_of_partition].products[product_key].remove_quantity(quantity_to_remove)
+            print("The quantity of the product " + product_code + " has been removed from" + " " + tesco.partitions[index_of_partition].name)
+
+            log_book.add_record("The quantity of the product " + product_code + " has been removed from" + " " + tesco.partitions[index_of_partition].name)
             continue
 
-        print("\n")
+        elif withdraw_action == "all":
+            tesco.partitions[index_of_partition].withdraw_product(product_code)
+            print("The product " + product_code + " has been withdrawed from " + tesco.partitions[index_of_partition].name)
 
+            log_book.add_record("The product " + product_code + " has been withdrawed from " + tesco.partitions[index_of_partition].name)
+            continue
+
+        else:
+            print("This option is not available.")
+            continue
+       
     elif action == "CQ":
         total_quantity_of_item = 0
 
-        print("what is the code of the product? please note that the code can only be numbers for easier use.")
+        print("what is the code of the product? .")
         product_code = str(input())
-
+        
+        product_exist = False
+        product_key = None
         for partition in tesco.partitions:
-            for key in partition.products:
-                if product_code == partition.products[key].code:
-                    total_quantity_of_item += partition.products[key].quantity
-        print("\n")
-        print ("The total quantity of the item under that code is", total_quantity_of_item)
-        print("note if the quantity is 0 then it could be the product under that code does'nt exist")
+            for product in partition.products:
+                if product == product_code:
+                    product_exist = True
+                    product_key = product_code
+                    total_quantity_of_item += partition.products[product_code].quantity
+
+        if product_exist == False:
+            print("The product under that code doesnt exist.")
+            continue
 
         print("\n")
+        print ("The total quantity of the item " + product_code + " under that code is ", total_quantity_of_item)
 
     elif action == "CI":
-        tesco.find_partition()
-
-        partition_existence = False
-        partition_not_empty = False
-
-        for partition in tesco.partitions:
-            if partition_name == partition.name and partition_floor == partition.floor:
-                partition_existence = True
-                if partition.products != {}:
-                    partition_not_empty = True
-                    for key in partition.products:
-                        print(partition.products[key].name, "quantity:", partition.products[key].quantity)
-                        break
-        
-        if partition_existence == False:
-            print("There are no partitions named" , partition_name, "on floor", partition_floor)
+        index_of_partition = tesco.find_partition()
+    
+        if index_of_partition == -1:
+            print("This partition does not exist.")
             continue
 
-        if partition_not_empty == False:
-            print("There are no products in this partition. Please create a product or choose another one.\n")
-            continue
-
-        print("\n")
+        for product in tesco.partitions[index_of_partition].products:
+            print(tesco.partitions[index_of_partition].products[product].name, "quantity:", tesco.partitions[index_of_partition].products[product].quantity)
+            
 
     elif action == "CP":
         print("here are the existing partitions inside the warehouse: \n")
