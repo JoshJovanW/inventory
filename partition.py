@@ -10,10 +10,11 @@ class Partition:
     def get_products(self):
         return f"the contents inside the room are {self.product}"
 
-    def add_products(self, product):
+    def add_product(self, product):
         self.products[product.code] = product
 
-    def withdraw_products(self, code):
-        self.product.pop(code)
+    def withdraw_product(self, code):
+        self.products.pop(code)
 
+    
     
