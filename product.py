@@ -11,10 +11,11 @@ class Product:
         self.quantity += quantity
 
     def remove_quantity(self, quantity):
-            self.quantity -= quantity
             if quantity > self.quantity:
                 print("The number you inputed exceeds the amount of products under that code.Try again")
                 return False
             else:
+                self.quantity -= quantity
                 return True
+
 
