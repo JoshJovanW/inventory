@@ -18,9 +18,17 @@ class Warehouse:
             print(partition.floor, "     ", partition.name)
 
         print("Write the partition name.")
-
         partition_name = input()
 
         print("Which floor is the partition in?")
         partition_floor = int(input())
 
+        index_of_partition = -1
+
+        for partition in self.partitions:
+            if partition.floor == partition_floor and partition.name == partition_name:
+                index_of_partition = self.partitions.index(partition)
+
+        return index_of_partition
+            
+            
